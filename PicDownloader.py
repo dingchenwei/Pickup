@@ -7,9 +7,7 @@ import numpy as np
 import os
 
 def getPage(url, keyword, page_index):
-    params=[]
-    # for i in range(30,30*pages+30,30):
-    params.append({
+    params={
                   'tn': 'resultjson_com',
                   'ipn': 'rj',
                   'ct': 201326592,
@@ -39,13 +37,12 @@ def getPage(url, keyword, page_index):
                   'rn': 30,
                   'gsm': '1e',
                   '1488942260214': ''
-              })
-    urls = []
-    for i in params:
-        # urls.append(requests.get(url,params=i).json().get('data'))
-        urls.append(requests.get(url, params=i))
+              }
+    results = requests.get(url,params=params).json().get('data')
+        # urls.append(requests.get(url, params=i))
         # print requests.get(url, params=i).json().get('data')
-    return urls
+    return results
+
 
 def downloadPic(url,keyword, pages):
     if(not os.path.exists('pictures/'+keyword)):
@@ -54,15 +51,16 @@ def downloadPic(url,keyword, pages):
     i = 0
     print '找到关键词:'+keyword+'的图片，现在开始下载图片...'
     for page_index in range(30, 30*pages+30, 30):
-        urls = getPage(url, keyword, page_index)
-        for html in urls:
-            pic_url = re.findall('"thumbURL":"(.*?)",',html.text,re.S)
-            print len(pic_url)
-            for each in pic_url:
-                f.write(each+'\n')
-                print '正在下载第'+str(i+1)+'张图片，图片地址:'+str(each)
+        datas = getPage(url, keyword, page_index)
+        print len(datas)
+        for data in datas:
+            # pic_url = re.findall('"thumbURL":"(.*?)",',html.text,re.S)
+            pic_url = data.get('thumbURL')
+            if(pic_url!=None):
+                f.write(pic_url+'\n')
+                print '正在下载第'+str(i+1)+'张图片，图片地址:'+str(pic_url)
                 try:
-                    pic= requests.get(each, timeout=100)
+                    pic= requests.get(pic_url, timeout=100)
                 except requests.exceptions.ConnectionError:
                     print '【错误】当前图片无法下载'
                     continue
@@ -77,7 +75,7 @@ def downloadPic(url,keyword, pages):
                 h = (image.shape)[0]
                 w = (image.shape)[1]
                 max_length = w if w > h else h
-                if max_length >= 300:
+                if max_length >= 1:
                     cv2.imwrite('pictures/'+keyword+'/'+keyword+str(i)+'.jpg', image)
                     i+=1
     f.close()
