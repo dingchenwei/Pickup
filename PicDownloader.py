@@ -6,6 +6,8 @@ import cv2
 import numpy as np
 import os
 import time
+from requests.exceptions import *
+import requests.exceptions
 
 proxies = {
     'https': 'socks5h://127.0.0.1:1080',
@@ -43,9 +45,9 @@ def downloadPic(url,keyword, pages):
     for page_index in range(100, 100*pages+100, 100):
         try:
             result = getPage(url, keyword, page_index)
-        except requests.exceptions.ConnectionError:
-            print keyword+'没能成功下载，请稍后重新下载'
-            break
+        except (ConnectionError, ChunkedEncodingError, BaseHTTPError, ContentDecodingError, HTTPError, Timeout, SSLError):
+            print '【错误】'+keyword+' 没能成功获取当前这批图片，请稍后重新下载'
+            continue
         pic_url = re.findall('"ou":"(.*?)",',result,re.S)
         print len(pic_url)
         if len(pic_url) == 0:
@@ -57,7 +59,7 @@ def downloadPic(url,keyword, pages):
             try:
                 pic= requests.get(each, headers=headers, proxies=proxies, timeout=100, allow_redirects=False)
                 time.sleep(0.3)
-            except (requests.exceptions.ConnectionError, requests.exceptions.ReadTimeout):
+            except (ConnectionError, ChunkedEncodingError, BaseHTTPError, ContentDecodingError, HTTPError, Timeout, SSLError):
                 print '【错误】当前图片无法下载'
                 continue
             string = 'pictures/'+keyword+'_'+str(i) + '.jpg'
