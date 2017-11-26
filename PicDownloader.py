@@ -50,7 +50,11 @@ def downloadPic(url,keyword, pages):
     i = 0
     print '找到关键词:'+keyword+'的图片，现在开始下载图片...'
     for page_index in range(30, 30*pages+30, 30):
-        result = getPage(url, keyword, page_index)
+        try:
+            result = getPage(url, keyword, page_index)
+        except reques.exceptions.ConnectionError:
+            print keyword+"下载失败，请重新下载"
+            break
         pic_url = re.findall('"thumbURL":"(.*?)",',result.text,re.S)
         print len(pic_url)
         if len(pic_url) == 0:
@@ -85,25 +89,26 @@ def downloadPic(url,keyword, pages):
 if __name__ == '__main__':
     url = 'https://image.baidu.com/search/acjson'
 
-    keyword_list = ['女主播', '女孩', '女生', '女老师', '女运动员', '女清洁工', '女厨师', '女作家', '女工程师', '女缝纫工', '女教授', '女服务员', '女医生', '女演员', '女司机', '女老板', '女记者', '护士', '女教练', '女管理员', '女售货员', '女理发师', '保姆', '女警察']
+    #keyword_list = ['女主播', '女孩', '女生', '女老师', '女运动员', '女清洁工', '女厨师', '女作家', '女工程师', '女缝纫工', '女教授', '女服务员', '女医生', '女演员', '女司机', '女老板', '女记者', '护士', '女教练', '女管理员', '女售货员', '女理发师', '保姆', '女警察']
+    keyword_list = ['女缝纫工', '女教授', '女服务员', '女医生', '女演员', '女司机', '女老板', '女记者', '护士', '女教练', '女管理员', '女售货员', '女理发师', '保姆', '女警察']
     for word in keyword_list:
         ori_word = word
-        downloadPic(url,ori_word, 1000)
+        downloadPic(url,ori_word, 30)
         word_zipai = '自拍'+ ori_word
-        downloadPic(url, word_zipai, 1000)
-        word_changfa = ori_word + ''
-        downloadPic(url, word_changfa, 1000)
+        downloadPic(url, word_zipai, 30)
+        word_changfa = ori_word + '长发'
+        downloadPic(url, word_changfa, 30)
         word_duanfa = ori_word + '短发'
-        downloadPic(url, word_duanfa, 1000)
+        downloadPic(url, word_duanfa, 30)
 
 
     keyword_list = ['男主播', '男孩', '男生', '男老师', '男运动员', '男清洁工', '男厨师', '男作家', '男工程师', '男教授', '男服务员', '男医生', '男演员', '男司机', '男记者', '男教练', '男管理员', '男售货员', '男警察']
     for word in keyword_list:
         ori_word = word
-        downloadPic(url,ori_word, 1000)
+        downloadPic(url,ori_word, 30)
         word_zipai = '自拍'+ ori_word
-        downloadPic(url, word_zipai, 1000)
+        downloadPic(url, word_zipai, 30)
         word_changfa = ori_word + '长发'
-        downloadPic(url, word_changfa, 1000)
+        downloadPic(url, word_changfa, 30)
         word_duanfa = ori_word + '短发'
-        downloadPic(url, word_duanfa, 1000)
+        downloadPic(url, word_duanfa, 30)
