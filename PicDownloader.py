@@ -80,42 +80,8 @@ if __name__ == '__main__':
 
     # word = raw_input("Input key word: ")
 
-    url = 'https://www.google.com/search'
-
-    # keyword_list = ['girl', 'girl_student', 'female_teacher', 'sportswoman', 'cleaning_woman', 'woman_cook',
-    #                 'woman_writer', 'female_engineers', 'seamstress', 'female_professor', 'waitress', 'woman_doctor',
-    #                 'doctress', 'actress', 'women_driver', 'hostess', 'newspaper_woman', 'nurse', 'female_coach',
-    #                 'female_administrator', 'saleswoman', 'womam_barber', 'baby-sitter', 'policewoman']
-    # # url = 'https://image.baidu.com/search/acjson'
-    # for word in keyword_list:
-    #     ori_word = word
-    #     downloadPic(url,ori_word, 1000)
-    #     word_selfie = 'selfie_'+ori_word
-    #     downloadPic(url, word_selfie, 1000)
-    #     word_long_hair = ori_word+'_long_hair'
-    #     downloadPic(url, word_long_hair, 1000)
-    #     word_short_hair = ori_word+'_short_hair'
-    #     downloadPic(url, word_short_hair, 1000)
-
-    keyword_list = ['boy', 'boy_student', 'male_teacher', 'sportsman', 'man_writer', 'male_engineers', 'male_professor', 'waiter', 'man_doctor', 'actor', 'man_driver', 'newspaper_man', 'male_coach', 'salesman', 'policeman']
-    # url = 'https://image.baidu.com/search/acjson'
-    for word in keyword_list:
-        ori_word = word
-        downloadPic(url, ori_word, 1000)
-        word_selfie = 'selfie_' + ori_word
-        downloadPic(url, word_selfie, 1000)
-        word_long_hair = ori_word + '_long_hair'
-        downloadPic(url, word_long_hair, 1000)
-        word_short_hair = ori_word + '_short_hair'
-        downloadPic(url, word_short_hair, 1000)
-
-
-    # keyword_list = ['男主播', '自拍_男主播', '女主播', '自拍_女主播', '长发_自拍_男', '中发_自拍_男', '短发_自拍_男', '长发_自拍_女', '中发_自拍_女', '短发_自拍_女']
-    # # url = 'https://image.baidu.com/search/acjson'
-    # for word in keyword_list:
-    #     ori_word = word
-    #     downloadPic(url, ori_word, 1000)
-
+    url_list = {'http://www.laifeng.com/center/1/1001?spm=a2h55.8996204.Search-left-menu.3!2~1~3~A&pageNo=1': 11, }
+    downloadPic(url, )
 
 
 
