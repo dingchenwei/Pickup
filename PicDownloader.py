@@ -40,7 +40,10 @@ def downloadPic(url, page_num):
     for page_index in range(page_num):
         try:
             result = requests.get(url+str(page_index+1), timeout=100)
-        except (ConnectionError, ChunkedEncodingError, BaseHTTPError, ContentDecodingError, HTTPError, Timeout, SSLError):
+        except (ConnectionError, ChunkedEncodingError, BaseHTTPError,
+                ContentDecodingError, HTTPError, Timeout, SSLError,
+                MissingSchema, TooManyRedirects, RequestException,
+                InvalidSchema, InvalidURL, URLRequired, ProxyError):
             print '没能成功获取page，请稍后重新下载'
             continue
         pic_url = re.findall('data-src="(.*?)"',result.text,re.S)
@@ -53,7 +56,10 @@ def downloadPic(url, page_num):
             print '正在下载第'+str(i+1)+'张图片，图片地址:'+str(each)
             try:
                 pic= requests.get(each, headers=headers, proxies=proxies, timeout=100, allow_redirects=False)
-            except (ConnectionError, ChunkedEncodingError, BaseHTTPError, ContentDecodingError, HTTPError, Timeout, SSLError):
+            except (ConnectionError, ChunkedEncodingError, BaseHTTPError,
+                ContentDecodingError, HTTPError, Timeout, SSLError,
+                MissingSchema, TooManyRedirects, RequestException,
+                InvalidSchema, InvalidURL, URLRequired, ProxyError):
                 print '【错误】当前图片无法下载'
                 continue
             #resolve the problem of encode, make sure that chinese name could be store
