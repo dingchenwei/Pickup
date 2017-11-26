@@ -91,7 +91,7 @@ if __name__ == '__main__':
         downloadPic(url,ori_word, 1000)
         word_zipai = '自拍'+ ori_word
         downloadPic(url, word_zipai, 1000)
-        word_changfa = ori_word + '长发'
+        word_changfa = ori_word + ''
         downloadPic(url, word_changfa, 1000)
         word_duanfa = ori_word + '短发'
         downloadPic(url, word_duanfa, 1000)
