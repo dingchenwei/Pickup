@@ -40,7 +40,11 @@ def downloadPic(url,keyword, pages):
     i = 0
     print '找到关键词:'+keyword+'的图片，现在开始下载图片...'
     for page_index in range(100, 100*pages+100, 100):
-        result = getPage(url, keyword, page_index)
+        try:
+            result = getPage(url, keyword, page_index)
+        except requests.exceptions.ConnectionError:
+            print keyword+'没能成功下载，请稍后重新下载'
+            break
         pic_url = re.findall('"ou":"(.*?)",',result,re.S)
         print len(pic_url)
         if len(pic_url) == 0:
@@ -93,24 +97,24 @@ if __name__ == '__main__':
     #     word_short_hair = ori_word+'_short_hair'
     #     downloadPic(url, word_short_hair, 1000)
 
-    # keyword_list = ['boy', 'boy_student', 'male_teacher', 'sportsman', 'man_writer', 'male_engineers', 'male_professor', 'waiter', 'man_doctor', 'actor', 'man_driver', 'newspaper_man', 'male_coach', 'salesman', 'policeman']
-    # # url = 'https://image.baidu.com/search/acjson'
-    # for word in keyword_list:
-    #     ori_word = word
-    #     downloadPic(url, ori_word, 1000)
-    #     word_selfie = 'selfie_' + ori_word
-    #     downloadPic(url, word_selfie, 1000)
-    #     word_long_hair = ori_word + '_long_hair'
-    #     downloadPic(url, word_long_hair, 1000)
-    #     word_short_hair = ori_word + '_short_hair'
-    #     downloadPic(url, word_short_hair, 1000)
-
-
-    keyword_list = ['长发_自拍_男', '中发_自拍_男', '短发_自拍_男', '长发_自拍_女', '中发_自拍_女', '短发_自拍_女']
+    keyword_list = ['boy', 'boy_student', 'male_teacher', 'sportsman', 'man_writer', 'male_engineers', 'male_professor', 'waiter', 'man_doctor', 'actor', 'man_driver', 'newspaper_man', 'male_coach', 'salesman', 'policeman']
     # url = 'https://image.baidu.com/search/acjson'
     for word in keyword_list:
         ori_word = word
         downloadPic(url, ori_word, 1000)
+        word_selfie = 'selfie_' + ori_word
+        downloadPic(url, word_selfie, 1000)
+        word_long_hair = ori_word + '_long_hair'
+        downloadPic(url, word_long_hair, 1000)
+        word_short_hair = ori_word + '_short_hair'
+        downloadPic(url, word_short_hair, 1000)
+
+
+    # keyword_list = ['男主播', '自拍_男主播', '女主播', '自拍_女主播', '长发_自拍_男', '中发_自拍_男', '短发_自拍_男', '长发_自拍_女', '中发_自拍_女', '短发_自拍_女']
+    # # url = 'https://image.baidu.com/search/acjson'
+    # for word in keyword_list:
+    #     ori_word = word
+    #     downloadPic(url, ori_word, 1000)
 
 
 
