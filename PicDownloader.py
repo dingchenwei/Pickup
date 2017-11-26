@@ -5,6 +5,7 @@ from StringIO import StringIO
 import cv2
 import numpy as np
 import os
+import time
 
 proxies = {
     'https': 'socks5h://127.0.0.1:1080',
@@ -55,7 +56,8 @@ def downloadPic(url,keyword, pages):
             print '正在下载第'+str(i+1)+'张图片，图片地址:'+str(each)
             try:
                 pic= requests.get(each, headers=headers, proxies=proxies, timeout=100, allow_redirects=False)
-            except requests.exceptions.ConnectionError:
+                time.sleep(0.3)
+            except (requests.exceptions.ConnectionError, requests.exceptions.ReadTimeout):
                 print '【错误】当前图片无法下载'
                 continue
             string = 'pictures/'+keyword+'_'+str(i) + '.jpg'
@@ -89,32 +91,33 @@ if __name__ == '__main__':
     # # url = 'https://image.baidu.com/search/acjson'
     # for word in keyword_list:
     #     ori_word = word
-    #     downloadPic(url,ori_word, 1000)
+    #     downloadPic(url,ori_word, 4)
     #     word_selfie = 'selfie_'+ori_word
-    #     downloadPic(url, word_selfie, 1000)
+    #     downloadPic(url, word_selfie, 4)
     #     word_long_hair = ori_word+'_long_hair'
-    #     downloadPic(url, word_long_hair, 1000)
+    #     downloadPic(url, word_long_hair, 4)
     #     word_short_hair = ori_word+'_short_hair'
-    #     downloadPic(url, word_short_hair, 1000)
+    #     downloadPic(url, word_short_hair, 4)
 
-    keyword_list = ['boy', 'boy_student', 'male_teacher', 'sportsman', 'man_writer', 'male_engineers', 'male_professor', 'waiter', 'man_doctor', 'actor', 'man_driver', 'newspaper_man', 'male_coach', 'salesman', 'policeman']
-    # url = 'https://image.baidu.com/search/acjson'
-    for word in keyword_list:
-        ori_word = word
-        downloadPic(url, ori_word, 1000)
-        word_selfie = 'selfie_' + ori_word
-        downloadPic(url, word_selfie, 1000)
-        word_long_hair = ori_word + '_long_hair'
-        downloadPic(url, word_long_hair, 1000)
-        word_short_hair = ori_word + '_short_hair'
-        downloadPic(url, word_short_hair, 1000)
-
-
-    # keyword_list = ['男主播', '自拍_男主播', '女主播', '自拍_女主播', '长发_自拍_男', '中发_自拍_男', '短发_自拍_男', '长发_自拍_女', '中发_自拍_女', '短发_自拍_女']
+    #keyword_list = ['boy', 'boy_student', 'male_teacher', 'sportsman', 'man_writer', 'male_engineers', 'male_professor', 'waiter', 'man_doctor', 'actor', 'man_driver', 'newspaper_man', 'male_coach', 'salesman', 'policeman']
+    # keyword_list = ['boy_student', 'male_teacher', 'sportsman', 'man_writer', 'male_engineers', 'male_professor', 'waiter', 'man_doctor', 'actor', 'man_driver', 'newspaper_man', 'male_coach', 'salesman', 'policeman']
     # # url = 'https://image.baidu.com/search/acjson'
     # for word in keyword_list:
     #     ori_word = word
     #     downloadPic(url, ori_word, 1000)
+    #     word_selfie = 'selfie_' + ori_word
+    #     downloadPic(url, word_selfie, 1000)
+    #     word_long_hair = ori_word + '_long_hair'
+    #     downloadPic(url, word_long_hair, 1000)
+    #     word_short_hair = ori_word + '_short_hair'
+    #     downloadPic(url, word_short_hair, 1000)
+
+
+    keyword_list = ['男主播', '自拍_男主播', '女主播', '自拍_女主播', '长发_自拍_男', '中发_自拍_男', '短发_自拍_男', '长发_自拍_女', '中发_自拍_女', '短发_自拍_女']
+    # url = 'https://image.baidu.com/search/acjson'
+    for word in keyword_list:
+        ori_word = word
+        downloadPic(url, ori_word, 1000)
 
 
 
