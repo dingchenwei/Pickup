@@ -35,7 +35,9 @@ def getPage(url, keyword, page_index):
     return result
 
 def downloadPic(url, page_num):
-    f = open('pictures/laifeng/urls.txt', 'w')
+    if not os.path.exists('pictures/qixiu'):
+        os.system('mkdir pictures/qixiu')
+    f = open('pictures/qixiu/urls.txt', 'w')
     i = 0
     for page_index in range(page_num):
         try:
@@ -46,7 +48,7 @@ def downloadPic(url, page_num):
                 InvalidSchema, InvalidURL, URLRequired, ProxyError):
             print '没能成功获取page，请稍后重新下载'
             continue
-        pic_url = re.findall('data-src="(.*?)"',result.text,re.S)
+        pic_url = re.findall('rsrc="(.*?)"',result.text,re.S)
         print len(pic_url)
         if len(pic_url) == 0:
             print "#####done#####"
@@ -75,7 +77,7 @@ def downloadPic(url, page_num):
             max_length = w if w > h else h
 
             if max_length >= 300:
-                cv2.imwrite('pictures/laifeng/laifeng'+str(i)+'.jpg', image)
+                cv2.imwrite('pictures/qixiu/qixiu'+str(i)+'.jpg', image)
                 i+=1
     f.close()
 
@@ -85,13 +87,7 @@ if __name__ == '__main__':
 
     # word = raw_input("Input key word: ")
 
-    url_list = {'http://www.laifeng.com/center/1/1001?spm=a2h55.8996204.Search-left-menu.3!2~1~3~A&pageNo=': 11,
-                'http://www.laifeng.com/center/1/1003?spm=a2h55.8996204.Search-left-menu.3!2~1~3!2~A&pageNo=': 6,
-                'http://www.laifeng.com/center/1/1005?spm=a2h55.8996204.Search-left-menu.3!2~1~3!3~A&pageNo=': 10,
-                'http://www.laifeng.com/center/1/1006?spm=a2h55.8996204.Search-left-menu.3!2~1~3!4~A&pageNo=': 17,
-                'http://www.laifeng.com/center/1/1007?spm=a2h55.8996204.Search-left-menu.3!2~1~3!5~A&pageNo=': 4,
-                'http://www.laifeng.com/center/1/1008?spm=a2h55.8996204.Search-left-menu.3!2~1~3!6~A&pageNo=': 3,
-                'http://www.laifeng.com/center/1/1004?spm=a2h55.8996204.Search-left-menu.3!2~1~3!7~A&pageNo=': 7
+    url_list = {'http://x.pps.tv/category/newIndex/alllive/s0-a0-f0-b1-p1': 10
                 }
     for (key, value) in url_list.items():
         downloadPic(key, value)
