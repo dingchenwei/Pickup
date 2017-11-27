@@ -126,9 +126,21 @@ if __name__ == '__main__':
     #     ori_word = word
     #     downloadPic(url, ori_word, 1000)
 
+    # keyword_list = ['情侣', '父子', '母子', '爸妈', '爷爷奶奶', '姐弟', '双胞胎', '龙凤胎']
+    # for word in keyword_list:
+    #     downloadPic(url, '自拍_'+word, 1000)
+    #
+    # keyword_list = ['1', '2', '3', '4', '5', '6', '7']
+    # for word in keyword_list:
+    #     downloadPic(url, '自拍_双人'+word, 1000)
+
+
+    keyword_list = ['三口之家', '一家三口', '三胞胎', '三个人']
+    for word in keyword_list:
+        keyword_list2 = ['_1', '_2', '_3', '_4']
+        for word2 in keyword_list2:
+            downloadPic(url, '自拍_'+word+word2, 1000)
 
 
 
 
-    keyword = '长发_自拍_女'
-    downloadPic(url, keyword, 100)
