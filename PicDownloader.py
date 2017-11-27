@@ -35,9 +35,9 @@ def getPage(url, keyword, page_index):
     return result
 
 def downloadPic(url, page_num):
-    if not os.path.exists('pictures/qixiu'):
-        os.system('mkdir pictures/qixiu')
-    f = open('pictures/qixiu/urls.txt', 'w')
+    if not os.path.exists('pictures/douyu'):
+        os.system('mkdir pictures/douyu')
+    f = open('pictures/douyu/urls.txt', 'w')
     i = 0
     for page_index in range(page_num):
         try:
@@ -48,7 +48,7 @@ def downloadPic(url, page_num):
                 InvalidSchema, InvalidURL, URLRequired, ProxyError):
             print '没能成功获取page，请稍后重新下载'
             continue
-        pic_url = re.findall('rsrc="(.*?)"',result.text,re.S)
+        pic_url = re.findall('"rs1":"(.*?)"',result.text,re.S)
         print len(pic_url)
         if len(pic_url) == 0:
             print "#####done#####"
@@ -71,13 +71,13 @@ def downloadPic(url, page_num):
             image = cv2.imdecode(np.fromstring(pic.content, np.uint8), -1)
             if(image is None):
               continue
-            image = cv2.resize(image, (320, 320))
+            # image = cv2.resize(image, (320, 320))
             h = (image.shape)[0]
             w = (image.shape)[1]
             max_length = w if w > h else h
 
             if max_length >= 300:
-                cv2.imwrite('pictures/qixiu/qixiu'+str(i)+'.jpg', image)
+                cv2.imwrite('pictures/douyu/douyu'+str(i)+'.jpg', image)
                 i+=1
     f.close()
 
@@ -87,7 +87,8 @@ if __name__ == '__main__':
 
     # word = raw_input("Input key word: ")
 
-    url_list = {'http://x.pps.tv/category/newIndex/alllive/s0-a0-f0-b1-p1': 10
+    url_list = {'https://www.douyu.com/gapi/rkc/directory/2_201/': 4
+
                 }
     for (key, value) in url_list.items():
         downloadPic(key, value)
