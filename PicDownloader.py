@@ -45,7 +45,10 @@ def downloadPic(url,keyword, pages):
     for page_index in range(100, 100*pages+100, 100):
         try:
             result = getPage(url, keyword, page_index)
-        except (ConnectionError, ChunkedEncodingError, BaseHTTPError, ContentDecodingError, HTTPError, Timeout, SSLError):
+        except (ConnectionError, ChunkedEncodingError, BaseHTTPError,
+                ContentDecodingError, HTTPError, Timeout, SSLError,
+                MissingSchema, TooManyRedirects, RequestException,
+                InvalidSchema, InvalidURL, URLRequired, ProxyError):
             print '【错误】'+keyword+' 没能成功获取当前这批图片，请稍后重新下载'
             continue
         pic_url = re.findall('"ou":"(.*?)",',result,re.S)
@@ -59,7 +62,10 @@ def downloadPic(url,keyword, pages):
             try:
                 pic= requests.get(each, headers=headers, proxies=proxies, timeout=100, allow_redirects=False)
                 time.sleep(0.3)
-            except (ConnectionError, ChunkedEncodingError, BaseHTTPError, ContentDecodingError, HTTPError, Timeout, SSLError):
+            except (ConnectionError, ChunkedEncodingError, BaseHTTPError,
+                ContentDecodingError, HTTPError, Timeout, SSLError,
+                MissingSchema, TooManyRedirects, RequestException,
+                InvalidSchema, InvalidURL, URLRequired, ProxyError):
                 print '【错误】当前图片无法下载'
                 continue
             string = 'pictures/'+keyword+'_'+str(i) + '.jpg'
@@ -86,9 +92,8 @@ if __name__ == '__main__':
 
     url = 'https://www.google.com/search'
 
-    # keyword_list = ['girl', 'girl_student', 'female_teacher', 'sportswoman', 'cleaning_woman',
-    #                 'woman_writer', 'female_professor', 'waitress', 'woman_doctor',
-    #                 'doctress', 'actress', 'hostess', 'newspaper_woman', 'nurse',
+    # keyword_list = ['woman_doctor',
+    #                 'doctress', 'actress', 'hostess', 'nurse',
     #                 'saleswoman', 'womam_barber', 'baby-sitter', 'policewoman']
     # # url = 'https://image.baidu.com/search/acjson'
     # for word in keyword_list:
@@ -102,17 +107,17 @@ if __name__ == '__main__':
     #     downloadPic(url, word_short_hair, 4)
 
     #keyword_list = ['boy', 'boy_student', 'male_teacher', 'sportsman', 'man_writer', 'male_engineers', 'male_professor', 'waiter', 'man_doctor', 'actor', 'man_driver', 'newspaper_man', 'male_coach', 'salesman', 'policeman']
-    keyword_list = ['boy_student', 'male_teacher', 'sportsman', 'male_professor', 'waiter', 'man_doctor', 'actor', 'driver', 'reportor', 'salesman', 'policeman']
-    # url = 'https://image.baidu.com/search/acjson'
-    for word in keyword_list:
-        ori_word = word
-        downloadPic(url, ori_word, 4)
-        word_selfie = 'selfie_' + ori_word
-        downloadPic(url, word_selfie, 4)
-        word_long_hair = ori_word + '_long_hair'
-        downloadPic(url, word_long_hair, 4)
-        word_short_hair = ori_word + '_short_hair'
-        downloadPic(url, word_short_hair, 4)
+    # keyword_list = ['male_professor', 'waiter', 'man_doctor', 'actor', 'driver', 'reporter', 'salesman', 'policeman']
+    # # url = 'https://image.baidu.com/search/acjson'
+    # for word in keyword_list:
+    #     ori_word = word
+    #     downloadPic(url, ori_word, 4)
+    #     word_selfie = 'selfie_' + ori_word
+    #     downloadPic(url, word_selfie, 4)
+    #     word_long_hair = ori_word + '_long_hair'
+    #     downloadPic(url, word_long_hair, 4)
+    #     word_short_hair = ori_word + '_short_hair'
+    #     downloadPic(url, word_short_hair, 4)
 
 
     # keyword_list = ['男主播', '自拍_男主播', '女主播', '自拍_女主播', '长发_自拍_男', '中发_自拍_男', '短发_自拍_男', '长发_自拍_女', '中发_自拍_女', '短发_自拍_女']
@@ -125,4 +130,5 @@ if __name__ == '__main__':
 
 
 
-
+    keyword = '长发_自拍_女'
+    downloadPic(url, keyword, 100)
