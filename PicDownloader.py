@@ -126,7 +126,8 @@ if __name__ == '__main__':
     #     ori_word = word
     #     downloadPic(url, ori_word, 1000)
 
-    # keyword_list = ['情侣', '父子', '母子', '爸妈', '爷爷奶奶', '姐弟', '双胞胎', '龙凤胎']
+    # keyword_list = ['双胞胎', '龙凤胎']
+    # # keyword_list = ['情侣', '父子', '母子', '爸妈', '爷爷奶奶', '姐弟', '双胞胎', '龙凤胎']
     # for word in keyword_list:
     #     downloadPic(url, '自拍_'+word, 1000)
     #
