@@ -8,6 +8,7 @@ import os
 from requests.exceptions import *
 def getPage(url, keyword, page_index):
     # for i in range(30,30*pages+30,30):
+    keyword = keyword.replace('_', ' ')
     params = {
                   'tn': 'resultjson_com',
                   'ipn': 'rj',
@@ -86,7 +87,7 @@ def downloadPic(url,keyword, pages):
             w = (image.shape)[1]
             max_length = w if w > h else h
             if max_length >= 300:
-                cv2.imwrite('pictures/baidu/'+keyword+'/'+keyword+str(i)+'.jpg', image)
+                cv2.imwrite('pictures/baidu/'+keyword+'/'+keyword+'_'+str(i)+'.jpg', image)
                 i+=1
     f.close()
 
@@ -96,30 +97,35 @@ if __name__ == '__main__':
     url = 'https://image.baidu.com/search/acjson'
 
     # keyword_list = ['女主播', '女孩', '女生', '女老师', '女运动员', '女清洁工', '女厨师', '女作家', '女工程师', '女缝纫工', '女教授', '女服务员', '女医生', '女演员', '女司机', '女老板', '女记者', '护士', '女教练', '女管理员', '女售货员', '女理发师', '保姆', '女警察']
-    keyword_list = ['1', '2', '3', '4', '5', '6', '7']
-
+    # keyword_list = ['1', '2', '3', '4', '5', '6', '7']
+    #
+    # for word in keyword_list:
+    #     ori_word = word
+    #     #downloadPic(url,ori_word, 30)
+    #     word_zipai = '自拍_双人_'+ ori_word
+    #     downloadPic(url, word_zipai, 1000)
+    #     # word_changfa = '自拍_双人'+ori_word + '长发'
+    #     # downloadPic(url, word_changfa, 1000)
+    #     # word_duanfa = '自拍_双人'+ori_word + '短发'
+    #     # downloadPic(url, word_duanfa, 1000)
+    #     # word_duanfa = '自拍_双人' + ori_word + '中发'
+    #     # downloadPic(url, word_duanfa, 1000)
+    # #
+    # #
+    # keyword_list = ['情侣', '父子', '母子', '爸妈', '爷爷奶奶', '姐弟', '双胞胎', '龙凤胎']
+    # for word in keyword_list:
+    #     ori_word = word
+    #     #downloadPic(url,ori_word, 30)
+    #     word_zipai = '自拍_'+ ori_word
+    #     downloadPic(url, word_zipai, 1000)
+    #     # word_changfa = ori_word + '长发'
+    #     # downloadPic(url, word_changfa, 30)
+    #     # word_duanfa = '自拍_'+ori_word + '短发'
+    #     # downloadPic(url, word_duanfa, 1000)
+    #     # word_duanfa = '自拍_' + ori_word + '中发'
+    #     # downloadPic(url, word_duanfa, 1000)
+    keyword_list = ['三口之家', '一家三口', '三胞胎', '三个人']
     for word in keyword_list:
-        ori_word = word
-        #downloadPic(url,ori_word, 30)
-        word_zipai = '自拍_双人_'+ ori_word
-        downloadPic(url, word_zipai, 1000)
-        # word_changfa = '自拍_双人'+ori_word + '长发'
-        # downloadPic(url, word_changfa, 1000)
-        # word_duanfa = '自拍_双人'+ori_word + '短发'
-        # downloadPic(url, word_duanfa, 1000)
-        # word_duanfa = '自拍_双人' + ori_word + '中发'
-        # downloadPic(url, word_duanfa, 1000)
-
-
-    keyword_list = ['情侣', '父子', '母子', '爸妈', '爷爷奶奶', '姐弟', '双胞胎', '龙凤胎']
-    for word in keyword_list:
-        ori_word = word
-        #downloadPic(url,ori_word, 30)
-        word_zipai = '自拍_'+ ori_word
-        downloadPic(url, word_zipai, 1000)
-        # word_changfa = ori_word + '长发'
-        # downloadPic(url, word_changfa, 30)
-        # word_duanfa = '自拍_'+ori_word + '短发'
-        # downloadPic(url, word_duanfa, 1000)
-        # word_duanfa = '自拍_' + ori_word + '中发'
-        # downloadPic(url, word_duanfa, 1000)
+        keyword_list2 = ['_1', '_2', '_3', '_4']
+        for word2 in keyword_list2:
+            downloadPic(url, '自拍_'+word+word2, 1000)
