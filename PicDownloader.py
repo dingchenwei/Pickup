@@ -11,12 +11,17 @@ def getPage(url, keyword, page_index):
     # for i in range(30,30*pages+30,30):
     keyword = keyword.replace('_', ' ')
     params = {
-        'query': keyword,
-        'mode': 1,
-        'start': page_index,
-        'reqType': 'ajax',
-        'reqFrom': 'result',
-        'tn': 0,
+          'q':keyword,
+          'src':'srp',
+          'correct':keyword,
+          'sn':page_index,
+          'pn':60,
+          'sid':'bdb4ac732ab9fab378895ff9976789a6',
+          'ran':0,
+          'ras':6,
+          'cn':0,
+          'gn':0,
+          'kn':0
               }
     result = requests.get(url, params=params)
         # print requests.get(url, params=i).json().get('data')
@@ -38,6 +43,7 @@ def downloadPic(url,keyword, pages):
             print keyword+"下载失败，请重新下载"
             break
         pic_url = re.findall('"pic_url":"(.*?)",',result.text,re.S)
+        print result.text
         print len(pic_url)
         if len(pic_url) == 0:
             print "#####done#####"
@@ -72,7 +78,7 @@ def downloadPic(url,keyword, pages):
 
 
 if __name__ == '__main__':
-    url = 'http://pic.sogou.com/pics?'
+    url = 'https://sg.images.search.yahoo.com/search/'
 
 
     keyword_list = ['女主播', '女孩', '女生', '女老师', '女运动员', '女清洁工', '女教授', '女服务员', '女医生', '女演员', '女明星']
