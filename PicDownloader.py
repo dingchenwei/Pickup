@@ -10,17 +10,12 @@ def getPage(url, keyword, page_index):
     # for i in range(30,30*pages+30,30):
     keyword = keyword.replace('_', ' ')
     params = {
-        'q': keyword,
-        'src': 'srp',
-        'correct': keyword,
-        'sn': page_index,
-        'pn': 60,
-        'sid': 'fc0bb48e3d23b10e5144163eb1176903',
-        ran: 0
-        ras: 6
-        cn: 0
-        gn: 0
-        kn: 50
+        'query': keyword,
+        'mode': 1,
+        'start': page_index,
+        'reqType': 'ajax',
+        'reqFrom': 'result',
+        'tn': 0,
               }
     result = requests.get(url, params=params)
         # print requests.get(url, params=i).json().get('data')
@@ -32,7 +27,7 @@ def downloadPic(url,keyword, pages):
     f = open('pictures/baidu/'+keyword+'/urls.txt', 'w')
     i = 0
     print '找到关键词:'+keyword+'的图片，现在开始下载图片...'
-    for page_index in range(60, 60*pages+60, 60):
+    for page_index in range(48, 48*pages+48, 48):
         try:
             result = getPage(url, keyword, page_index)
         except (ConnectionError, ChunkedEncodingError, BaseHTTPError,
@@ -41,7 +36,8 @@ def downloadPic(url,keyword, pages):
                 InvalidSchema, InvalidURL, URLRequired, ProxyError):
             print keyword+"下载失败，请重新下载"
             break
-        pic_url = re.findall('"thumbURL":"(.*?)",',result.text,re.S)
+        print result.text
+        pic_url = re.findall('"pic_url":"(.*?)",',result.text,re.S)
         print len(pic_url)
         if len(pic_url) == 0:
             print "#####done#####"
@@ -69,14 +65,14 @@ def downloadPic(url,keyword, pages):
             w = (image.shape)[1]
             max_length = w if w > h else h
             if max_length >= 300:
-                cv2.imwrite('pictures/baidu/'+keyword+'/'+keyword+'_'+str(i)+'.jpg', image)
+                cv2.imwrite('pictures/sougou/'+keyword+'/'+keyword+'_'+str(i)+'.jpg', image)
                 i+=1
     f.close()
 
 
 
 if __name__ == '__main__':
-    url = 'https://image.baidu.com/search/acjson'
+    url = 'http://pic.sogou.com/?p=&w=05009900'
 
     keyword_list = ['女主播', '女孩', '女生', '女老师', '女运动员', '女清洁工', '女教授', '女服务员', '女医生', '女演员', '女明星']
     # keyword_list = ['1', '2', '3', '4', '5', '6', '7']
