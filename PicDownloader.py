@@ -73,7 +73,7 @@ def downloadPic(url,keyword, pages):
 
 
 if __name__ == '__main__':
-    url = 'http://pic.sogou.com/pics?'
+    url = 'http://www.gexing.com/zipai/t/情侣/good/'
 
 
     # keyword_list = ['女主播', '女孩', '女生', '女老师', '女运动员', '女清洁工', '女教授', '女服务员', '女医生', '女演员', '女明星']
@@ -110,26 +110,9 @@ if __name__ == '__main__':
     # pool.join()
     # #
     # #
-    keyword_list = ['情侣', '父子', '母子', '爸妈', '爷爷奶奶', '姐弟', '双胞胎', '龙凤胎']
-    pool = multiprocessing.Pool(processes=10)
-    for word in keyword_list:
-        ori_word = word
-        #downloadPic(url,ori_word, 30)
-        word_zipai = '自拍_'+ ori_word
-        pool.apply_async(downloadPic, (url, word_zipai, 1000,))
-        # downloadPic(url, word_zipai, 1000)
-        # word_changfa = ori_word + '长发'
-        # downloadPic(url, word_changfa, 30)
-        # word_duanfa = '自拍_'+ori_word + '短发'
-        # downloadPic(url, word_duanfa, 1000)
-        # word_duanfa = '自拍_' + ori_word + '中发'
-        # downloadPic(url, word_duanfa, 1000)
-    keyword_list = ['三口之家', '一家三口', '三胞胎', '三个人']
-    for word in keyword_list:
-        # keyword_list2 = ['_1', '_2', '_3', '_4']
-        # for word2 in keyword_list2:
-        # downloadPic(url, '自拍_'+word, 1000)
-        pool.apply_async(downloadPic, (url, '自拍_'+word, 1000,))
-
+    pool = multiprocessing.Pool(processes=200)
+    for i in range(200):
+        url_tmp = url+str(i+1)
+        pool.apply_async(url_tmp, 1000)
     pool.close()
     pool.join()
