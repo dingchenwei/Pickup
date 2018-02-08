@@ -6,7 +6,7 @@ import cv2
 import numpy as np
 import os
 from requests.exceptions import *
-def getPage(url, keyword, page_index):
+def getPage(url, keyword, page_index, images_per_page): #设定一些发送请求的参数，不同网站不一样
     # for i in range(30,30*pages+30,30):
     keyword = keyword.replace('_', ' ')
     params = {
@@ -36,7 +36,7 @@ def getPage(url, keyword, page_index):
                   'nc': 1,
                   'fr': '',
                   'pn': page_index,
-                  'rn': 30,
+                  'rn': images_per_page,
                   'gsm': '1e',
                   '1488942260214': ''
               }
@@ -44,25 +44,25 @@ def getPage(url, keyword, page_index):
         # print requests.get(url, params=i).json().get('data')
     return result
 
-def downloadPic(url,keyword, pages):
-    if(not os.path.exists('pictures/baidu/'+keyword)):
-        os.system('mkdir pictures/baidu/'+keyword)
-    f = open('pictures/baidu/'+keyword+'/urls.txt', 'w')
-    i = 0
+def downloadPic(url,keyword, pages, images_per_page, path):
+    if(not os.path.exists(path+keyword)):
+        os.system('mkdir ' + path + keyword)
+    f = open(path+keyword+'/urls.txt', 'w') #存放下载的所有图片的源地址
+    i = 0 #图片序号
     print '找到关键词:'+keyword+'的图片，现在开始下载图片...'
-    for page_index in range(30, 30*pages+30, 30):
+    for page_index in range(images_per_page, images_per_page*pages+images_per_page, images_per_page):
         try:
-            result = getPage(url, keyword, page_index)
+            result = getPage(url, keyword, page_index, images_per_page)
         except (ConnectionError, ChunkedEncodingError, BaseHTTPError,
                 ContentDecodingError, HTTPError, Timeout, SSLError,
                 MissingSchema, TooManyRedirects, RequestException,
                 InvalidSchema, InvalidURL, URLRequired, ProxyError):
-            print keyword+"下载失败，请重新下载"
+            print keyword+"获取本页内容失败，请重新获取"
             break
-        pic_url = re.findall('"thumbURL":"(.*?)",',result.text,re.S)
-        print len(pic_url)
+        pic_url = re.findall('"thumbURL":"(.*?)",',result.text,re.S) #字符串匹配，百度在网页源码上放了多个不同尺寸的图片地址，thumbURL是百度统一压缩过的，储存在百度自己的服务器上，爬的比较快。
+        print '本页共有' + str(len(pic_url)) + '张图片'
         if len(pic_url) == 0:
-            print "#####done#####"
+            print "本页下载完成"
             break
         for each in pic_url:
             f.write(each+'\n')
@@ -75,7 +75,6 @@ def downloadPic(url,keyword, pages):
                     InvalidSchema, InvalidURL, URLRequired, ProxyError):
                 print '【错误】当前图片无法下载'
                 continue
-            string = 'pictures/'+keyword+'_'+str(i) + '.jpg'
             #resolve the problem of encode, make sure that chinese name could be store
             #fp = open(string.decode('utf-8').encode('cp936'),'wb')
             #fp.write(pic.content)
@@ -86,46 +85,24 @@ def downloadPic(url,keyword, pages):
             h = (image.shape)[0]
             w = (image.shape)[1]
             max_length = w if w > h else h
-            if max_length >= 300:
-                cv2.imwrite('pictures/baidu/'+keyword+'/'+keyword+'_'+str(i)+'.jpg', image)
+            if max_length >= 300: #图片长边必须大于300
+                cv2.imwrite(path+keyword+'/'+keyword+'_'+str(i)+'.jpg', image)
                 i+=1
     f.close()
 
 
 
 if __name__ == '__main__':
-    url = 'https://image.baidu.com/search/acjson'
+    url = 'https://image.baidu.com/search/acjson' #对应网站的图片搜索url
+    keyword_list = ['zipai'] #此处加入搜索的关键词
+    pages = 1000 #一般图片网站以页为单位，一页几十张图片，选择你要下载多少页图片
+    images_per_page = 30 #根据网站，设定每页多少张图
+    path = '/Users/dingchenwei/Downloads/Pickup-master/pictures/baidu/' #图片储存路径
 
-    # keyword_list = ['女主播', '女孩', '女生', '女老师', '女运动员', '女清洁工', '女厨师', '女作家', '女工程师', '女缝纫工', '女教授', '女服务员', '女医生', '女演员', '女司机', '女老板', '女记者', '护士', '女教练', '女管理员', '女售货员', '女理发师', '保姆', '女警察']
-    # keyword_list = ['1', '2', '3', '4', '5', '6', '7']
-    #
-    # for word in keyword_list:
-    #     ori_word = word
-    #     #downloadPic(url,ori_word, 30)
-    #     word_zipai = '自拍_双人_'+ ori_word
-    #     downloadPic(url, word_zipai, 1000)
-    #     # word_changfa = '自拍_双人'+ori_word + '长发'
-    #     # downloadPic(url, word_changfa, 1000)
-    #     # word_duanfa = '自拍_双人'+ori_word + '短发'
-    #     # downloadPic(url, word_duanfa, 1000)
-    #     # word_duanfa = '自拍_双人' + ori_word + '中发'
-    #     # downloadPic(url, word_duanfa, 1000)
-    # #
-    # #
-    # keyword_list = ['情侣', '父子', '母子', '爸妈', '爷爷奶奶', '姐弟', '双胞胎', '龙凤胎']
-    # for word in keyword_list:
-    #     ori_word = word
-    #     #downloadPic(url,ori_word, 30)
-    #     word_zipai = '自拍_'+ ori_word
-    #     downloadPic(url, word_zipai, 1000)
-    #     # word_changfa = ori_word + '长发'
-    #     # downloadPic(url, word_changfa, 30)
-    #     # word_duanfa = '自拍_'+ori_word + '短发'
-    #     # downloadPic(url, word_duanfa, 1000)
-    #     # word_duanfa = '自拍_' + ori_word + '中发'
-    #     # downloadPic(url, word_duanfa, 1000)
-    keyword_list = ['三口之家', '一家三口', '三胞胎', '三个人']
-    for word in keyword_list:
-        keyword_list2 = ['_1', '_2', '_3', '_4']
-        for word2 in keyword_list2:
-            downloadPic(url, '自拍_'+word+word2, 1000)
+    if(not os.path.exists(path)):
+        os.system('mkdir ' + path)
+        
+    for keyword in keyword_list:
+    	downloadPic(url, keyword, pages, images_per_page, path)
+
+ 
